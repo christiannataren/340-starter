@@ -1,18 +1,124 @@
 /******* Change Box Model ***************/
+:root {
+  --blueish: #31bbdb;
+
+}
+
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
 
-.siteName a:visited {
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+header {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-content: center;
+  justify-content: center;
+  padding-top: 1em;
+
+}
+
+a:visited {
   color: black;
   /* text-decoration: none; */
 }
 
-.siteName a {
+a {
   font-size: 2em;
   color: black;
   text-decoration: none;
   font-weight: bold;
+}
+
+#tools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+#tools a {
+  font-size: 1em;
+  font-weight: 100;
+  margin-top: 0.2em;
+}
+
+nav {
+  background-color: black;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  padding: 1em;
+}
+
+nav li {
+  color: white;
+  list-style: none;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 1.3em;
+}
+
+#hero {
+  padding: 1em;
+  position: relative;
+  margin-top: 1em;
+
+}
+
+.data-veh button {
+  background-color: var(--blueish);
+  border: none;
+  font-weight: bold;
+  padding: 0.5em;
+  font-size: 0.8em;
+}
+
+.data-veh {
+  position: absolute;
+  top: 1.4em;
+  color: var(--blueish);
+  background-color: rgb(255, 255, 255, 0.8);
+
+}
+
+.car-name {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.data-veh li {
+  font-size: 0.9em;
+  list-style: none;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+h2 {
+  margin-bottom: 0.5em;
+  font-size: 1.3em;
+}
+
+#ul-reviews {
+  margin-bottom: 1em;
+}
+
+#ul-reviews li {
+  margin-left: 1.2em;
+  margin-bottom: 0.4em;
 }
