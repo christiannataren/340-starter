@@ -45,12 +45,12 @@ header {
 
 
 a:visited {
-  color: black;
+  color: white;
   /* text-decoration: none; */
 }
 
 a {
-  font-size: 2em;
+  /* font-size: 2em; */
   color: black;
   text-decoration: none;
   font-weight: bold;
@@ -74,6 +74,32 @@ nav {
   margin-top: 1em;
 }
 
+nav a:hover {
+
+  animation-name: color;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  font-size: larger;
+
+}
+
+@keyframes color {
+  0% {
+    color: red;
+  }
+
+  25% {
+    color: green;
+  }
+
+  75% {
+    color: blue;
+
+  }
+
+}
+
 nav ul {
   display: flex;
   justify-content: space-around;
@@ -84,6 +110,10 @@ nav li {
   color: white;
   list-style: none;
   font-weight: bold;
+}
+
+nav li a {
+  color: white;
 }
 
 h1 {
