@@ -41,7 +41,6 @@ Util.buildClassificationGrid = async function (data) {
                 + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model
                 + ' on CSE Motors" /></a>'
             grid += '<div class="namePrice">'
-            grid += '<hr />'
             grid += '<h2>'
             grid += '<a href="../../inv/detail/' + vehicle.inv_id + '" title="View '
                 + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">'
@@ -59,6 +58,32 @@ Util.buildClassificationGrid = async function (data) {
     return grid
 }
 
+
+///////////////////Build vehicle view
+Util.buildVehicleData = async function (data) {
+    let info = data[0];
+    let veh_name = `${info.inv_make} ${info.inv_model}`
+    let html = `
+    <div id="veh-details">
+        <h1>${info.inv_year} ${veh_name}</h1>
+        <img src="${info.inv_image}" alt="Photo of ${veh_name}"  >
+        <h2>${veh_name} Details</h2>
+        <div  id="details">
+       <p> <span class="bold">Price: </span>$${new Intl.NumberFormat('en-US').format(info.inv_price).toString()}</p>
+        <p><span class="bold">Description: </span>${info.inv_description}</p>
+        <p><span class="bold">Color: </span>${info.inv_color}</p>
+        <p><span class="bold">Miles: </span>${info.inv_miles}</p>
+        </div>
+        
+    </div>
+    
+    
+    
+    `;
+    return html;
+    ;
+
+}
 
 
 /* ****************************************

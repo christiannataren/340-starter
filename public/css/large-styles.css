@@ -39,4 +39,24 @@
     #reviews {
         grid-area: reviews;
     }
+
+
+    
+    #inv-display {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1em;
+    }
+
+    #inv-display li{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .namePrice{
+       display: flex;
+       flex-direction: column;
+       height: 100%;
+       justify-content:flex-end;
+       padding-bottom: 0.5em;
 }

@@ -44,10 +44,6 @@ header {
 }
 
 
-a:visited {
-  color: white;
-  /* text-decoration: none; */
-}
 
 a {
   /* font-size: 2em; */
@@ -159,9 +155,15 @@ img {
 }
 
 h2 {
-  margin-bottom: 0.5em;
   font-size: 1.3em;
 }
+
+#upgrades h2 {
+  margin-bottom: 0.5em;
+
+}
+
+
 
 
 #reviews {
@@ -218,4 +220,73 @@ h2 {
   color: revert;
   text-decoration: revert;
   font-size: revert;
+}
+
+
+
+
+#inv-display {
+  display: grid;
+  gap: 1em;
+}
+
+#inv-display img {
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+
+
+#inv-display li {
+  border-bottom: solid 2px rgb(92, 91, 91);
+  padding-bottom: 0.2em;
+  list-style: none;
+
+}
+#inv-display a {
+  display: flex;
+  flex-direction: column;
+}
+
+.namePrice {
+  margin-left: 0.4em;
+}
+
+#veh-details {
+  display: grid;
+}
+
+#veh-details h1,
+#veh-details h2 {
+  margin-left: 0.2em;
+}
+
+#veh-details h2 {
+  font-size: 1.2em;
+
+}
+
+#veh-details img {
+  margin: 0 auto;
+  max-width: 90%;
+
+
+}
+
+#details {
+  padding: 0.5em;
+  display: grid;
+  gap: 0.4em;
+}
+
+.bold {
+  font-weight: bolder;
+}
+
+#details p {
+  padding: 0.6em;
+}
+
+#details p:nth-of-type(odd) {
+  background-color: rgb(237, 240, 239);
 }
