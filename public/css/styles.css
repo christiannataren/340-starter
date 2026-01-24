@@ -73,11 +73,6 @@ nav {
 }
 
 nav a:hover {
-
-  animation-name: color;
-  animation-duration: 0.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
   font-size: larger;
 
 }
