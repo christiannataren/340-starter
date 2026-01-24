@@ -72,7 +72,7 @@ Util.buildVehicleData = async function (data) {
        <p> <span class="bold">Price: </span>$${new Intl.NumberFormat('en-US').format(info.inv_price).toString()}</p>
         <p><span class="bold">Description: </span>${info.inv_description}</p>
         <p><span class="bold">Color: </span>${info.inv_color}</p>
-        <p><span class="bold">Miles: </span>${info.inv_miles}</p>
+        <p><span class="bold">Miles: </span>${new Intl.NumberFormat('en-US').format(info.inv_miles).toString()}</p>
         </div>
         
     </div>
