@@ -518,6 +518,7 @@ label {
   background-color: var(--error);
 }
 
+select:focus:invalid ,
 input:focus:invalid ,
 textarea:focus:invalid {
   background-color: var(--error);
@@ -525,6 +526,7 @@ textarea:focus:invalid {
 }
 
 textarea:focus:valid,
+select:focus:valid,
 input:focus:valid {
   background-color: var(--ok);
 
