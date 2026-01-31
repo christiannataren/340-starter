@@ -40,5 +40,54 @@ async function getVehicleDetails(vehicleId) {
     }
 }
 
+// CLasification ID exist
+async function classificationIdExists(classification_id) {
+    try {
+        const sql = "SELECT * FROM classification WHERE classification_id = $1"
+        const clas = await pool.query(sql, [classification_id])
+        return clas.rowCount
+    } catch (error) {
+        return error.message
+    }
+}
+// CLasification exist
+async function classificationExists(classification_name) {
+    try {
+        const sql = "SELECT * FROM classification WHERE classification_name = $1"
+        const email = await pool.query(sql, [classification_name])
+        return email.rowCount
+    } catch (error) {
+        return error.message
+    }
+}
+///////Inserting new classification
+async function insertNewClassification(classification_name) {
+    try {
+        const sql = "INSERT INTO classification (classification_name) VALUES ($1) RETURNING *"
+        return await pool.query(sql, [classification_name])
+    } catch (error) {
+        return error.message
+    }
+}
+///////Inserting new vehicle
+async function insertNewVehicle(vehicle) {
+    try {
+        const sql = "INSERT INTO inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *"
+        return await pool.query(sql, [
+            vehicle.inv_make,
+            vehicle.inv_model,
+            vehicle.inv_year,
+            vehicle.inv_description,
+            vehicle.inv_image,
+            vehicle.inv_thumbnail,
+            vehicle.inv_price,
+            vehicle.inv_miles,
+            vehicle.inv_color,
+            vehicle.classification_id,
+        ])
+    } catch (error) {
+        return error.message
+    }
+}
 
-module.exports = { getClassifications, getInventoryByClassificationId, getVehicleDetails };
+module.exports = { getClassifications, getInventoryByClassificationId, getVehicleDetails, insertNewClassification, classificationExists, classificationIdExists, insertNewVehicle };

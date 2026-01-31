@@ -84,6 +84,24 @@ Util.buildVehicleData = async function (data) {
     ;
 
 }
+///////////////////Build select clasification
+Util.buildSelectClassification = async function (data) {
+    data = data.rows;
+    let options = '<option value="">--Please choose an option--</option>';
+    console.log("CLASIFICATIONS LENGTH:::::::::::::::::::::::::::::::::::::::::::::::::::" + data.length);
+    for (let i = 0; i < data.length; i++) {
+        options += `<option value="${data[i].classification_id}">${data[i].classification_name}</option>`;
+    }
+    let html = `
+    <select name="classification_id" id="classification_id" required>
+    ${options}
+
+    </select>
+    `;
+    return html;
+    ;
+
+}
 
 
 /* ****************************************

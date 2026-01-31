@@ -1,6 +1,9 @@
 /******* Change Box Model ***************/
 :root {
   --blueish: #31bbdb;
+  --blue-dark: #32475c;
+  --error: rgb(249, 144, 144);
+  --ok: rgb(167, 236, 167);
 
 }
 
@@ -327,4 +330,218 @@ h2 {
   top: 1em;
   border-radius: 10px;
   width: 100%;
+}
+
+/*Login style */
+
+#login_form {
+  background-color: var(--blueish);
+  padding: 0.5em;
+}
+
+
+form {
+  background-color: var(--blue-dark);
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  padding: 0.3em;
+  font-weight: bold;
+  /* background-color: rgb(233, 233, 10); */
+}
+
+#login_form h3 {
+  color: white;
+  margin-bottom: 0.5em;
+}
+
+#register_menu {
+  color: white;
+  text-align: center;
+  margin-top: 0.7em;
+}
+
+#register_menu a:visited,
+#register_menu a {
+  color: white;
+}
+
+
+form h2,
+form h3 {
+  color: white;
+  margin: 0.3em 0 1em 0;
+}
+
+#pass-msg {
+  display: block;
+  margin-bottom: 0.7em;
+  font-size: smaller;
+}
+
+input {
+  width: 100%;
+  height: 30px;
+  border-radius: 3px;
+  border: none;
+}
+
+input {
+  display: block;
+  margin-bottom: 1em;
+  margin-top: 0.1em;
+
+
+}
+
+.required::before {
+  content: "*";
+  color: rgb(245, 116, 116);
+  font-size: 0.8em;
+}
+
+label {
+  color: white;
+  font-size: 0.9em;
+
+}
+
+
+.toggle-button input.register-btn {
+  margin: 0.5em 0 1em 0;
+  background-color: var(--blueish);
+  width: 7em;
+  padding: 0.5em;
+  height: auto;
+  font-size: 1.3em;
+  color: white;
+  font-weight: bold;
+}
+
+#password-lbl {
+  position: relative;
+}
+
+#see-password {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 4px;
+  bottom: 0.3em;
+}
+
+#see-password:active {
+  opacity: 0.4;
+}
+
+#see-password::before {
+  content: "👁️";
+  font-size: 20px;
+}
+
+
+
+
+
+
+/*Messages         */
+@keyframes notification {
+  0% {
+    transform: translateY(1em);
+  }
+
+  33% {
+    transform: translateY(0);
+  }
+
+  66% {
+    transform: translateY(1em);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+
+}
+
+.notice,
+.error {
+  /*apply this to general message style*/
+  padding: 0.3em;
+  font-style: italic;
+  border: 2px solid rgb(0, 0, 0, 0.1);
+  animation-name: notification;
+  animation-timing-function: linear;
+  animation-duration: 0.2s;
+  animation-iteration-count: 1;
+}
+
+.notice {
+  background-color: rgb(248, 248, 65);
+}
+
+.error {
+  background-color: var(--error);
+}
+
+.notice li,
+.error li {
+  /*apply to every li from message */
+  list-style: none;
+
+}
+
+
+/* adding vehicles and clasification styles */
+#adding {
+  margin: 1em;
+}
+
+#adding input[type="submit"] {
+  background-color: rebeccapurple;
+  width: auto;
+}
+
+#adding a {
+  display: block;
+  font-size: 1.3em;
+  margin-top: 0.3em;
+}
+
+#classification_name:not(:placeholder-shown):invalid {
+  background-color: var(--error);
+}
+
+#inv_year:not(:placeholder-shown):invalid {
+  background-color: var(--error);
+}
+
+input:focus:invalid ,
+textarea:focus:invalid {
+  background-color: var(--error);
+
+}
+
+textarea:focus:valid,
+input:focus:valid {
+  background-color: var(--ok);
+
+}
+
+select {
+  display: block;
+  margin-bottom: 0.5em;
+  height: 30px;
+}
+
+.ok {
+  background-color: rgb(167, 236, 167);
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5em;
 }

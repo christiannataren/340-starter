@@ -62,17 +62,23 @@
     }
 
 
-    #veh-details{
+    #veh-details {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
 
-    #veh-details h1{
+    #veh-details h1 {
         grid-column: 1/3;
 
     }
-    #veh-details img{
-       align-self: center;
+
+    #veh-details img {
+        align-self: center;
+    }
+
+    form {
+        max-width: 22em;
+        margin: 0 auto;
     }
 
 }

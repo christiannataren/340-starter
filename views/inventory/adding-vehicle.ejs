@@ -1,0 +1,52 @@
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="error">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+            <h2><%- title %></h2>
+            <div id="add-vehicle-form">
+
+                <form action="/inv/add-vehicle" method="post">
+                    <h3>All fields are required.</h3>
+                    <label>Classification<span class="required"></span>
+                        <%- select_classifications %>
+                    </label>
+                    <label>Make<span class="required"></span>
+                        <input minlength="3" type="text" name="inv_make" id="inv_make" required placeholder="Min of 3 characters">
+                    </label>
+                    <label>Model<span class="required"></span>
+                        <input minlength="3" type="text" name="inv_model" id="inv_model" required
+                            placeholder="Min of 3 characters">
+                    </label>
+                    <label>
+                        Description<span class="required"></span>
+                        <textarea minlength="3" name="inv_description" id="inv_description" rows="5" required></textarea>
+                    </label>
+                    <label>Image Path<span class="required"></span>
+                        <input type="text" name="inv_image" id="inv_image" required>
+                    </label>
+                    <label>Thumbnail Path<span class="required"></span>
+                        <input type="text" name="inv_thumbnail" id="inv_thumbnail" required>
+                    </label>
+                    <label>Price<span class="required"></span>
+                        <input type="number" name="inv_price" id="inv_price" required placeholder="decimal or integer">
+                    </label>
+                    <label>Year<span class="required"></span>
+                        <input type="text" inputmode="numeric" maxlength="4" pattern="\d{4}" name="inv_year"
+                            id="inv_year" required placeholder="4-digits year">
+                    </label>
+                    <label>Miles<span class="required"></span>
+                        <input type="number" name="inv_miles" id="inv_miles" required placeholder="digits only">
+                    </label>
+                    <label>Color<span class="required"></span>
+                        <input type="text" name="inv_color" id="inv_color" required>
+                    </label>
+
+                    <input type="submit" name="submit" id="submit" value="Save Vehicle">
+                </form>
+            </div>
