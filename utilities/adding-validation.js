@@ -60,7 +60,7 @@ validate.addingVehicle = (res, req) => {
             .escape()
             .notEmpty()
             .withMessage("Please introduce a Year")
-            .isNumeric()
+            .isInt()
             .withMessage("Year must contain a number")
             .isLength({ min: 4, max: 4 })
             .withMessage('Year must be exactly 4 digits')
@@ -70,8 +70,8 @@ validate.addingVehicle = (res, req) => {
             .escape()
             .notEmpty()
             .withMessage("Please introduce Mileage")
-            .isNumeric()
-            .withMessage("Miles should contain a number")
+            .isInt()
+            .withMessage("Miles must contain only digits")
         ,
         body("inv_color")
             .trim()
@@ -120,7 +120,7 @@ validate.checkVehicleData = async (req, res, next) => {
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav()
         let clasifications = await invModel.getClassifications()
-        let select_classifications = await utilities.buildSelectClassification(clasifications,req.vehicle.classification_id);
+        let select_classifications = await utilities.buildSelectClassification(clasifications, req.vehicle.classification_id);
         res.render("./inventory/adding-vehicle", {
             title: "Add New Vehicle",
             nav,

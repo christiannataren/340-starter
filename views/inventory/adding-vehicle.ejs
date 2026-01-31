@@ -42,8 +42,8 @@
                         value="<%- locals.vehicle.inv_thumbnail %>" <% } %>>
                     </label>
                     <label>Price<span class="required"></span>
-                        <input type="number" name="inv_price" id="inv_price" required placeholder="decimal or integer"
-                            <% if (locals.vehicle !==undefined){ %>
+                        <input type="text" inputmode="decimal" pattern="\d*\.?\d+" name="inv_price" id="inv_price"
+                            required placeholder="decimal or integer" <% if (locals.vehicle !==undefined){ %>
                         value="<%- locals.vehicle.inv_price %>" <% } %>>
                     </label>
                     <label>Year<span class="required"></span>
@@ -52,8 +52,8 @@
                         value="<%- locals.vehicle.inv_year %>" <% } %> >
                     </label>
                     <label>Miles<span class="required"></span>
-                        <input type="number" name="inv_miles" id="inv_miles" required placeholder="digits only" <% if
-                            (locals.vehicle !==undefined){ %>
+                        <input type="text" inputmode="numeric" pattern="[0-9]*" name="inv_miles" id="inv_miles" required
+                            placeholder="digits only" <% if (locals.vehicle !==undefined){ %>
                         value="<%- locals.vehicle.inv_miles %>" <% } %>>
                     </label>
                     <label>Color<span class="required"></span>
