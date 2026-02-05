@@ -6,6 +6,17 @@ const invModel = require("../models/inventory-model")
 
 
 
+/*adding validate id rule rules */
+
+validate.validateVehicleId = (res, req) => {
+    return [body("inv_id").trim()
+        .escape()
+        .notEmpty()
+        .withMessage("Vehicle ID invalid")
+        .isInt()
+        .withMessage("Vehicle ID invalid")]
+}
+
 /*adding vehicle rules */
 validate.addingVehicle = (res, req) => {
     return [
@@ -72,6 +83,7 @@ validate.addingVehicle = (res, req) => {
             .withMessage("Please introduce Mileage")
             .isInt()
             .withMessage("Miles must contain only digits")
+            .isInt({ gt: 0 }).withMessage("Mileage must be a positive number")
         ,
         body("inv_color")
             .trim()
@@ -79,7 +91,6 @@ validate.addingVehicle = (res, req) => {
             .notEmpty()
             .withMessage("Please introduce a Color")
         ,
-        body(),
         body("inv_image")
             .trim()
             .escape()
@@ -113,8 +124,11 @@ validate.addingClassification = () => {
     ]
 }
 
+
+// Validate Vehicle data
 validate.checkVehicleData = async (req, res, next) => {
     let errors = []
+
     errors = validationResult(req)
     req.vehicle = matchedData(req);
     if (!errors.isEmpty()) {
@@ -123,6 +137,28 @@ validate.checkVehicleData = async (req, res, next) => {
         let select_classifications = await utilities.buildSelectClassification(clasifications, req.vehicle.classification_id);
         res.render("./inventory/adding-vehicle", {
             title: "Add New Vehicle",
+            nav,
+            errors,
+            select_classifications,
+            vehicle: req.vehicle
+        })
+        return
+    }
+    next()
+}
+// Validate edit Vehicle data
+validate.checkUpdateData = async (req, res, next) => {
+    let errors = []
+    errors = validationResult(req)
+    req.vehicle = matchedData(req);
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        let clasifications = await invModel.getClassifications()
+        let select_classifications = await utilities.buildSelectClassification(clasifications, req.vehicle.classification_id);
+        let model = req.vehicle.inv_model
+        let make = req.vehicle.inv_make
+        res.render("./inventory/edit-vehicle", {
+            title: `Edit ${make} ${model}`,
             nav,
             errors,
             select_classifications,

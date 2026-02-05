@@ -2,11 +2,22 @@ const accountModel = require("../models/account-model")
 const utilities = require("../utilities")
 const baseController = {}
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 baseController.buildLogin = async function (req, res, next) {
     let nav = await utilities.getNav()
     res.render("account/login", {
         title: "Login",
+        nav,
+        errors: null
+    })
+}
+
+baseController.buildDashboard = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    res.render("account/dashboard", {
+        title: "Dashboard",
         nav,
         errors: null
     })
@@ -65,4 +76,57 @@ baseController.registerAccount = async function (req, res) {
         })
     }
 }
+
+
+
+// Login Process
+
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+baseController.accountLogin = async function (req, res) {
+    let nav = await utilities.getNav()
+    const { account_email, account_password } = req.body
+    const accountData = await accountModel.getAccountByEmail(account_email)
+    if (!accountData) {
+        req.flash("notice", "Please check your credentials and try again.")
+        res.status(400).render("account/login", {
+            title: "Login",
+            nav,
+            errors: null,
+            account_email,
+        })
+        return
+    }
+    try {
+        if (await bcrypt.compare(account_password, accountData.account_password)) {
+            delete accountData.account_password
+            const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+            if (process.env.NODE_ENV === 'development') {
+                res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
+            } else {
+                res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
+            }
+            return res.redirect("/account/")
+        }
+        else {
+            req.flash("message notice", "Please check your credentials and try again.")
+            res.status(400).render("account/login", {
+                title: "Login",
+                nav,
+                errors: null,
+                account_email,
+            })
+        }
+    } catch (error) {
+        throw new Error('Access Forbidden')
+    }
+}
+
+
+
+
+// End Login process
+
+
 module.exports = baseController

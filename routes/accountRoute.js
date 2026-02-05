@@ -4,6 +4,10 @@ const accountController = require("../controllers/accountController");
 const utilities = require("../utilities");
 const regValidate = require('../utilities/account-validation')
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
+
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildDashboard));
+
+
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
 
 // Process the registration data
@@ -16,10 +20,16 @@ router.post(
 
 
 // Process the login attempt
+// router.post(
+//     "/login", regValidate.loginRules(),
+//     regValidate.checkLoginData,
+//     utilities.handleErrors(accountController.buildLogin)
+
+// )
 router.post(
     "/login", regValidate.loginRules(),
     regValidate.checkLoginData,
-    utilities.handleErrors(accountController.buildLogin)
+    utilities.handleErrors(accountController.accountLogin)
 
 )
 

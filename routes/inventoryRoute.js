@@ -16,5 +16,8 @@ router.post("/add-vehicle", addingValidator.addingVehicle(), addingValidator.che
 
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
 router.get("/detail/:vehicleId", utilities.handleErrors(vehicleController.buildVehicle));
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
 
+router.get("/edit/:inventory_id", utilities.handleErrors(invController.editInventory)); ///Route that handles vehicle editing
+router.post("/update/", addingValidator.addingVehicle(), addingValidator.validateVehicleId(), addingValidator.checkUpdateData, utilities.handleErrors(invController.updateInventoryPost))
 module.exports = router;

@@ -7,14 +7,17 @@ const invCont = {}
 
 
 /* ***************************
- *  Build Home view
+ *  Build Home view Inventory Management
  * ************************** */
 invCont.buildIndex = async function (req, res, next) {
     let nav = await utilities.getNav()
+    let clasifications = await invModel.getClassifications()
+    let categories = await utilities.buildSelectClassification(clasifications);
     res.render("./inventory/index", {
         title: "Vehicle management",
         nav,
-        errors: null
+        errors: null,
+        categories
     })
 
 }
@@ -31,6 +34,26 @@ invCont.buildAddingClasification = async function (req, res, next) {
 
 }
 
+// Edit Vehicle controller edit-vehicle
+invCont.editInventory = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    let inventory_id = parseInt(req.params.inventory_id)
+    let vehicle_data = await invModel.getVehicleDetails(inventory_id)
+    vehicle_data = vehicle_data[0]
+    let clasifications = await invModel.getClassifications()
+    let select_classifications = await utilities.buildSelectClassification(clasifications, vehicle_data.classification_id);
+    let make = vehicle_data.inv_make
+    let model = vehicle_data.inv_model
+    console.log(vehicle_data)
+    res.render("./inventory/edit-vehicle", {
+        title: `Edit ${make} ${model}`,
+        nav,
+        errors: null,
+        select_classifications,
+        vehicle: vehicle_data
+    })
+
+}
 // Add Vehicle controller add-vehicle
 invCont.buildAddingVehicle = async function (req, res, next) {
     let nav = await utilities.getNav()
@@ -51,7 +74,6 @@ invCont.buildAddingVehiclePost = async function (req, res, next) {
     let nav = await utilities.getNav()
     let regResult = invModel.insertNewVehicle(req.vehicle);
     //
-
     if (regResult) {
         req.flash(
             "notice",
@@ -68,6 +90,37 @@ invCont.buildAddingVehiclePost = async function (req, res, next) {
             title: "Add New Vehicle",
             nav,
             errors: null
+        })
+    }
+
+}
+/* ***************************
+ *  Build Editing vehicle POST controller
+ * ************************** */
+invCont.updateInventoryPost = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    console.log("VEHICLE SATAATATTATATTATATATATATAT")
+    console.log(req.vehicle)
+    let updateResult = await invModel.updateInventory(req.vehicle);
+    vehicle_data = req.vehicle
+    //
+    if (updateResult) {
+        const itemName = updateResult.inv_make + " " + updateResult.inv_model
+        req.flash("notice", `The ${itemName} was successfully updated.`)
+        res.redirect("/inv/")
+    } else {
+
+        let clasifications = await invModel.getClassifications()
+        let select_classifications = await utilities.buildSelectClassification(clasifications, vehicle_data.classification_id);
+        let make = vehicle_data.inv_make
+        let model = vehicle_data.inv_model
+        req.flash("notice", "Sorry, the insert failed.")
+        res.status(501).render("./inventory/edit-vehicle", {
+            title: `Edit ${make} ${model}`,
+            nav,
+            errors: null,
+            select_classifications,
+            vehicle: vehicle_data
         })
     }
 
@@ -114,6 +167,20 @@ invCont.buildByClassificationId = async function (req, res, next) {
         grid,
     })
 
+}
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async function (req, res, next) {
+    const classification_id = parseInt(req.params.classification_id)
+    const invData = await invModel.getInventoryByClassificationId(classification_id)
+    console.log("Entramos a jSON")
+    if (invData[0].inv_id) {
+        return res.json(invData)
+    } else {
+        next(new Error("No data returned"))
+    }
 }
 
 module.exports = invCont
