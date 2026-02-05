@@ -1,0 +1,42 @@
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="error">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+            <h2><%- title %></h2>
+            <div id="add-vehicle-form">
+
+                <form action="/inv/delete" method="post" id="updateForm">
+                    <input type="hidden" name="inv_id" id="inv_id" required <% if (locals.vehicle !==undefined){ %>
+                    value="<%- locals.vehicle.inv_id %>" <% } %> >
+                            <label>Make<span class="required"></span>
+                                <input readonly minlength="3" type="text" name="inv_make" id="inv_make" required
+                                    placeholder="Min of 3 characters" <% if (locals.vehicle !==undefined){ %>
+                                value="<%- locals.vehicle.inv_make %>" <% } %> >
+                            </label>
+                            <label>Model<span class="required"></span>
+                                <input readonly minlength="3" type="text" name="inv_model" id="inv_model" required
+                                    placeholder="Min of 3 characters" <% if (locals.vehicle !==undefined){ %>
+                                value="<%- locals.vehicle.inv_model %>" <% } %>>
+                            </label>
+                            <label>Price<span class="required"></span>
+                                <input readonly type="text" inputmode="decimal" pattern="\d*\.?\d+" name="inv_price"
+                                    id="inv_price" required placeholder="decimal or integer" <% if (locals.vehicle
+                                    !==undefined){ %>
+                                value="<%- locals.vehicle.inv_price %>" <% } %>>
+                            </label>
+                            <label>Year<span class="required"></span>
+                                <input readonly type="text" inputmode="numeric" maxlength="4" pattern="\d{4}"
+                                    name="inv_year" id="inv_year" required placeholder="4-digits year" <% if
+                                    (locals.vehicle !==undefined){ %>
+                                value="<%- locals.vehicle.inv_year %>" <% } %> >
+                            </label>
+                            <p class="error">Confirm Deletion - The delete is permanent.</p>
+                            <input type="submit" name="submit" id="submit" value="Delete Vehicle">
+                </form>
+            </div>

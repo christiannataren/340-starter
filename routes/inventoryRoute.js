@@ -20,4 +20,9 @@ router.get("/getInventory/:classification_id", utilities.handleErrors(invControl
 
 router.get("/edit/:inventory_id", utilities.handleErrors(invController.editInventory)); ///Route that handles vehicle editing
 router.post("/update/", addingValidator.addingVehicle(), addingValidator.validateVehicleId(), addingValidator.checkUpdateData, utilities.handleErrors(invController.updateInventoryPost))
+
+router.get("/delete/:inventory_id", utilities.handleErrors(invController.deleteInventory));
+router.post("/delete/", utilities.handleErrors(invController.deleteInventoryPost));
+
+
 module.exports = router;

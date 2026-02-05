@@ -54,6 +54,26 @@ invCont.editInventory = async function (req, res, next) {
     })
 
 }
+// Delete Vehicle controller delete-vehicle
+invCont.deleteInventory = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    let inventory_id = parseInt(req.params.inventory_id)
+    let vehicle_data = await invModel.getVehicleDetails(inventory_id)
+    vehicle_data = vehicle_data[0]
+    let clasifications = await invModel.getClassifications()
+    let select_classifications = await utilities.buildSelectClassification(clasifications, vehicle_data.classification_id);
+    let make = vehicle_data.inv_make
+    let model = vehicle_data.inv_model
+    console.log(vehicle_data)
+    res.render("./inventory/delete-confirm", {
+        title: `Delete ${make} ${model}`,
+        nav,
+        errors: null,
+        select_classifications,
+        vehicle: vehicle_data
+    })
+
+}
 // Add Vehicle controller add-vehicle
 invCont.buildAddingVehicle = async function (req, res, next) {
     let nav = await utilities.getNav()
@@ -149,6 +169,29 @@ invCont.buildAddingClasificationPost = async function (req, res, next) {
     }
 
 }
+/* ***************************
+ *  Delete vehicle POST controler
+ * ************************** */
+invCont.deleteInventoryPost = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    let { inv_id, inv_model, inv_make } = req.body
+    let regResult = await invModel.deleteInventory(inv_id);
+    let classification_name = `${inv_make} ${inv_model}`
+
+    if (regResult) {
+        req.flash(
+            "notice",
+            `The ${classification_name} Classification was successfully deleted.`
+        )
+        res.redirect("/inv")
+    } else {
+        req.flash("error", "Sorry, the classification was not deleted")
+        res.redirect("/inv")
+    }
+
+}
+
+
 /* ***************************
  *  Build inventory by classification view
  * ************************** */
