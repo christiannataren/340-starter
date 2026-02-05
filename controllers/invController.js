@@ -99,13 +99,11 @@ invCont.buildAddingVehiclePost = async function (req, res, next) {
  * ************************** */
 invCont.updateInventoryPost = async function (req, res, next) {
     let nav = await utilities.getNav()
-    console.log("VEHICLE SATAATATTATATTATATATATATAT")
-    console.log(req.vehicle)
     let updateResult = await invModel.updateInventory(req.vehicle);
     vehicle_data = req.vehicle
-    //
     if (updateResult) {
         const itemName = updateResult.inv_make + " " + updateResult.inv_model
+        // console.log(`The ${itemName} was successfully updated.`)
         req.flash("notice", `The ${itemName} was successfully updated.`)
         res.redirect("/inv/")
     } else {

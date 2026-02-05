@@ -11,7 +11,7 @@
             <h2><%- title %></h2>
             <div id="add-vehicle-form">
 
-                <form action="/inv/update" method="post">
+                <form action="/inv/update" method="post" id="updateForm">
                     <h3>All fields are required.</h3>
                     <label>Classification<span class="required"></span>
                         <%- select_classifications %>
@@ -66,6 +66,8 @@
                                 value="<%- locals.vehicle.inv_color %>" <% } %>>
                             </label>
 
-                            <input type="submit" name="submit" id="submit" value="Update Vehicle">
+                            <input type="submit" name="submit" id="submit" value="Update Vehicle" disabled>
                 </form>
             </div>
+
+            <script src="../../js/inv-update.js"></script>
