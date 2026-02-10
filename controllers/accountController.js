@@ -53,20 +53,35 @@ baseController.buildUpdate = async function (req, res, next) {
 ////process update user data
 baseController.buildUpdatePost = async function (req, res, next) {
     let { account_firstname, account_lastname, account_email, account_id } = req.body
+    if (account_id != res.locals.accountData.account_id) {
+        req.flash("error", 'You can not modified others accounts.')
+        req.flash("error", 'This incident will be reported.')
+        res.redirect("/account/")
+        return
+
+    }
     let result = await accountModel.updateUser(account_firstname, account_lastname, account_email, account_id)
+
     if (result) {
         req.flash("ok", 'Your information has been updated.')
     } else {
         req.flash("error", 'There was an error updating your information.')
     }
     res.redirect("/account/")
-    return
+
 }
 ////process update Password data
 baseController.buildUpdatePasswordPost = async function (req, res, next) {
     let { account_password, account_id } = req.body
     console.log("New password: " + account_password)
 
+    if (account_id != res.locals.accountData.account_id) {
+        req.flash("error", 'You can not modified others accounts.')
+        req.flash("error", 'This incident will be reported.')
+        res.redirect("/account/")
+        return
+
+    }
     // Hash the password before storing
     let hashedPassword
     try {

@@ -138,6 +138,7 @@ Util.checkJWTToken = async (req, res, next) => {
                     return res.redirect("/account/login")
                 }
                 res.locals.accountData = await accountModel.getAccountById(accountData.account_id)
+                req.accountData = res.locals.accountData
                 res.locals.loggedin = 1
                 next()
             })
