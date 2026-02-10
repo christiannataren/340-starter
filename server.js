@@ -13,6 +13,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
+const privilegesChecker = require("./utilities/privilegesAccess")
 const utilities = require("./utilities")
 const session = require("express-session")
 const pool = require('./database/')
@@ -65,7 +66,7 @@ app.use(static)
 app.use(utilities.checkJWTToken)
 app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
-app.use("/inv", inventoryRoute)
+app.use("/inv", utilities.checkLogin, privilegesChecker.AdminEmployeePrivilege, inventoryRoute)
 app.use("/account", accountRoute)
 
 

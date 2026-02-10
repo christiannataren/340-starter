@@ -1,0 +1,71 @@
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="error">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+            <h2><%- title %></h2>
+            <div id="update_account_form">
+                <form action="/account/update/<%- account.account_id %>" method="post">
+                    <input type="hidden" name="operation" value="update_information">
+                    <input type="hidden" name="account_id" id="account_id" value="<%- account.account_id %>">
+
+
+                    <label>
+                        First name<span class="required"></span>
+                        <input type="text" required name="account_firstname" id="account_firstname"
+                            value='<%- account.account_firstname %>'>
+                    </label>
+                    <label>
+                        Last name<span class="required"></span>
+                        <input type="text" required name="account_lastname" id="account_lastname"
+                            value='<%- account.account_lastname %>'>
+                    </label>
+                    <label>
+                        Email address<span class="required"></span>
+                        <input type="email" required name="account_email" id="account_email"
+                            placeholder="Enter a valid email address" value='<%- account.account_email %>'>
+                    </label>
+
+
+                    <input type="submit" class="register-btn" name="submit" id="submit" value="Update">
+
+                </form>
+
+                <div id="update_password">
+                    <h2>Update password</h2>
+                    <form action="/account/update/password/<%- account.account_id %>" method="post">
+                        <input type="hidden" name="account_id" id="account_id-password"
+                            value="<%- account.account_id %>">
+
+                        <input type="hidden" name="operation" value="update_password">
+                        <div id="password-lbl">
+                            <button id="see-password" type="button" data-action=""></button>
+                            <label>
+                                Password<span class="required"></span>
+                                <span id="pass-msg">(Passwords must be at least 12 characters and contain at least 1
+                                    number,
+                                    1
+                                    capital
+                                    letter and 1
+                                    special character)</span>
+                                <input type="password"
+                                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required
+                                    name="account_password" id="account_password">
+
+                            </label>
+                        </div>
+                        <input type="submit" class="register-btn" name="submit" id="submit-password"
+                            value="Change Password">
+
+                    </form>
+                </div>
+
+
+            </div>
+
+            <script src="/js/passwd-btn.js" defer></script>

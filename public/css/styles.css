@@ -39,12 +39,16 @@ body {
 
 header {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr 2fr;
   align-content: center;
   justify-content: center;
   padding: 1em 0.5em 0 0.5em;
 
 
+}
+
+footer {
+  margin-top: 2em;
 }
 
 
@@ -466,6 +470,7 @@ label {
 
 }
 
+.ok,
 .notice,
 .error {
   /*apply this to general message style*/
@@ -487,7 +492,8 @@ label {
 }
 
 .notice li,
-.error li {
+.error li,
+.ok li {
   /*apply to every li from message */
   list-style: none;
 
@@ -518,8 +524,8 @@ label {
   background-color: var(--error);
 }
 
-select:focus:invalid ,
-input:focus:invalid ,
+select:focus:invalid,
+input:focus:invalid,
 textarea:focus:invalid {
   background-color: var(--error);
 
@@ -546,4 +552,43 @@ textarea {
   display: block;
   width: 100%;
   margin-bottom: 0.5em;
+}
+
+.welcome {
+  font-style: italic;
+  margin-right: 0.6em;
+  font-size: 15px;
+}
+
+#tools {
+  display: flex;
+  align-items: center;
+}
+
+#tools a {
+  text-decoration: underline;
+}
+
+#dashboard {
+  margin-top: 1em;
+
+
+}
+
+#dashboard p {
+  margin-bottom: 1em;
+}
+
+#dashboard h3 {
+  margin: 1em 0 1em 0;
+}
+
+#dashboard h2 {
+  font-size: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#update_password {
+  margin-top: 2em;
 }

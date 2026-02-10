@@ -13,9 +13,18 @@ baseController.buildLogin = async function (req, res, next) {
         errors: null
     })
 }
+baseController.logout = async function (req, res, next) {
+    req.session.destroy();
+    res.clearCookie('jwt', { path: '/' });
+    res.clearCookie('sessionId', { path: '/' });
+    console.log("Session destroyed")
+    res.redirect("/");
+}
 
 baseController.buildDashboard = async function (req, res, next) {
     let nav = await utilities.getNav()
+    let privilege = await accountModel.getAccountPrivilege(res.locals.accountData.account_id)
+    res.locals.accountData.account_type = privilege
     res.render("account/dashboard", {
         title: "Dashboard",
         nav,
@@ -29,6 +38,54 @@ baseController.buildRegister = async function (req, res, next) {
         nav,
         errors: null
     })
+}
+baseController.buildUpdate = async function (req, res, next) {
+    let nav = await utilities.getNav()
+    let account_id = req.params.account_id
+    let account = await accountModel.getAccountById(account_id)
+    res.render("account/update", {
+        title: "Edit Account",
+        nav,
+        errors: null,
+        account
+    })
+}
+////process update user data
+baseController.buildUpdatePost = async function (req, res, next) {
+    let { account_firstname, account_lastname, account_email, account_id } = req.body
+    let result = await accountModel.updateUser(account_firstname, account_lastname, account_email, account_id)
+    if (result) {
+        req.flash("ok", 'Your information has been updated.')
+    } else {
+        req.flash("error", 'There was an error updating your information.')
+    }
+    res.redirect("/account/")
+    return
+}
+////process update Password data
+baseController.buildUpdatePasswordPost = async function (req, res, next) {
+    let { account_password, account_id } = req.body
+    console.log("New password: " + account_password)
+
+    // Hash the password before storing
+    let hashedPassword
+    try {
+        // regular password and cost (salt is generated automatically)
+        hashedPassword = await bcrypt.hashSync(account_password, 10)
+    } catch (error) {
+        req.flash("error", 'Sorry, there was an error processing the registration.')
+        res.redirect("/account/update/" + account_id)
+        return
+    }
+
+
+    let result = await accountModel.updateUserPassword(hashedPassword, account_id)
+    if (result) {
+        req.flash("ok", 'Your password has been updated.')
+    } else {
+        req.flash("error", 'There was an error updating your password.')
+    }
+    res.redirect("/account/")
 }
 /* ****************************************
 *  Process Registration
@@ -89,7 +146,7 @@ baseController.accountLogin = async function (req, res) {
     const { account_email, account_password } = req.body
     const accountData = await accountModel.getAccountByEmail(account_email)
     if (!accountData) {
-        req.flash("notice", "Please check your credentials and try again.")
+        req.flash("error", "Please check your credentials and try again.")
         res.status(400).render("account/login", {
             title: "Login",
             nav,
@@ -110,7 +167,7 @@ baseController.accountLogin = async function (req, res) {
             return res.redirect("/account/")
         }
         else {
-            req.flash("message notice", "Please check your credentials and try again.")
+            req.flash("error", "Please check your credentials and try again.")
             res.status(400).render("account/login", {
                 title: "Login",
                 nav,
