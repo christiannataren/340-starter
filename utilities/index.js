@@ -26,6 +26,35 @@ Util.getNav = async function (req, res, next) {
     list += "</ul>"
     return list
 }
+/* ************************
+ * Constructs the versions HTML 
+ ************************** */
+Util.buildCurrenVersions = function (data) {
+    let html = ``;
+    if (data.length > 0) {
+        let rows = '';
+        for (let i = 0; i < data.length; i++) {
+            rows += `<tr><td>${data[i].version_name}</td>
+      <td><a href="/inv/version/delete/${data[i].version_id}">Delete</a></td></tr>`
+        }
+        html = `<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    ${rows}
+      
+    
+  </tbody>
+</table>`
+    }
+
+    return html;
+}
 
 
 /* **************************************
@@ -60,22 +89,35 @@ Util.buildClassificationGrid = async function (data) {
     return grid
 }
 
-
+function buildVersions(defaultImg, versions) {
+    if (versions.length > 0) {
+        let options = `<option disabled selected>Available versions</option>
+        <option id="default" value="${defaultImg}" >Default version</option>`;
+        for (let i = 0; i < versions.length; i++) {
+            options += `<option value="${versions[i].version_image}">${versions[i].version_name}</option>`
+        }
+        return `<select id="versions-select">${options}</select>`;
+    }
+    return "";
+}
 ///////////////////Build vehicle view
 Util.buildVehicleData = async function (data) {
     let info = data[0];
     let veh_name = `${info.inv_make} ${info.inv_model}`
+    let versions = buildVersions(info.inv_image, data.versions)
     let html = `
     <div id="veh-details">
         <h1>${info.inv_year} ${veh_name}</h1>
-        <img src="${info.inv_image}" alt="Photo of ${veh_name}"  >
+        <img id="vehicle-image" src="${info.inv_image}" alt="Photo of ${veh_name}"  >
         <div  id="details">
         <h2>${veh_name} Details</h2>
        <p> <span class="bold">Price: </span>$${new Intl.NumberFormat('en-US').format(info.inv_price).toString()}</p>
         <p><span class="bold">Description: </span>${info.inv_description}</p>
-        <p><span class="bold">Color: </span>${info.inv_color}</p>
-        <p><span class="bold">Miles: </span>${new Intl.NumberFormat('en-US').format(info.inv_miles).toString()}</p>
+        <p id="color-veh"><span class="bold">Color: </span>${info.inv_color}</p>
+        <p id="miles-veh"><span class="bold">Miles: </span>${new Intl.NumberFormat('en-US').format(info.inv_miles).toString()}</p>
+        ${versions}
         </div>
+
         
     </div>
     

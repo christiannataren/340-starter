@@ -19,12 +19,15 @@ const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const fileUpload = require("express-fileupload");
+
 
 
 
 /* ***********************
  * Middleware
  * ************************/
+app.use(fileUpload());
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
     createTableIfMissing: true,
@@ -48,6 +51,7 @@ app.use(cookieParser())
 
 
 
+
 /* ***********************
  * Views
  *************************/
@@ -55,6 +59,7 @@ app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
 app.use(static)
+
 
 
 

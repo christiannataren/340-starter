@@ -29,6 +29,10 @@ body {
   font-family: 'Roboto', Arial, Helvetica;
 }
 
+.hide {
+  display: none;
+}
+
 body {
   max-width: 750px;
   margin: 0 auto;
@@ -591,4 +595,26 @@ textarea {
 
 #update_password {
   margin-top: 2em;
+}
+
+#inventoryDisplay td {
+  padding-left: 0.5em;
+  /* background-color: rebeccapurple; */
+}
+
+#current-versions {
+  /* border-top: solid 2px black; */
+  margin-top: 1em;
+}
+
+#current-versions table {
+  margin: 1em;
+  text-align: center;
+
+}
+
+#current-versions table td {
+  padding: 0.3em;
+  /* border: solid 1px black; */
+
 }

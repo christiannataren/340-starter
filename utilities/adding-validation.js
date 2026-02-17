@@ -2,7 +2,8 @@ const utilities = require(".")
 const { body, validationResult, matchedData } = require("express-validator")
 const validate = {}
 const invModel = require("../models/inventory-model")
-
+const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 
 
@@ -141,6 +142,70 @@ validate.checkVehicleData = async (req, res, next) => {
             errors,
             select_classifications,
             vehicle: req.vehicle
+        })
+        return
+    }
+    next()
+}
+
+/*adding version  rules */
+validate.validateVersionRules = (req, res) => {
+    return [
+        body("inv_id").trim()
+            .escape()
+            .notEmpty()
+            .withMessage("Data incomplete"),
+        body("version_name").trim()
+            .escape()
+            .notEmpty()
+            .withMessage("You should write a name"),
+
+        body("version_image").custom(async (value, { req }) => {
+            // When a file has been uploaded
+            if (req.files && Object.keys(req.files).length !== 0) {
+
+                const uploadedFile = req.files.version_image;
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+                if (!allowedTypes.includes(uploadedFile.mimetype)) {
+                    throw new Error('Format not allowed. Use JPG, PNG, WebP or GIF.');
+                }
+                const ext = path.extname(uploadedFile.name).toLowerCase();
+                const safeFilename = `${uuidv4()}${ext}`;
+                const uploadPath = __dirname
+                    + "/../public/images/vehicles/" + safeFilename;
+                req.version_image = "/images/vehicles/" + safeFilename;
+                let resul = await uploadedFile.mv(uploadPath, function (err) {
+                    if (err) {
+                        throw new Error(err)
+                    }
+                });
+            } else {
+                throw new Error("Please upload an image.")
+            }
+        })
+
+    ]
+}
+
+// Validate version data
+validate.checkVersionData = async (req, res, next) => {
+    let errors = []
+    errors = validationResult(req);
+    req.vehicle = matchedData(req);
+    req.vehicle.version_image = req.version_image;
+
+    if (!errors.isEmpty()) {
+        let inventory_id = parseInt(req.params.inventory_id);
+        let vehicle = await invModel.getVehicleDetails(inventory_id);
+        vehicle = await vehicle[0];
+        let nav = await utilities.getNav()
+        vehicle.version_name = req.vehicle.version_name
+
+        res.render("./inventory/adding-version", {
+            title: `Add New Version ${vehicle.inv_make} ${vehicle.inv_model}`,
+            nav,
+            errors,
+            vehicle: vehicle
         })
         return
     }

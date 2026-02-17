@@ -33,6 +33,27 @@ invCont.buildAddingClasification = async function (req, res, next) {
     })
 
 }
+/* ***************************
+ *  Build Adding new version
+ * ************************** */
+invCont.buildAddingVersion = async function (req, res, next) {
+    let inventory_id = parseInt(req.params.inventory_id);
+    let vehicle = await invModel.getVehicleDetails(inventory_id);
+    let vdb = await invModel.getVehicleVersions(inventory_id)
+    let versions = utilities.buildCurrenVersions(vdb);
+    
+
+    vehicle = await vehicle[0];
+    vehicle.versions = versions;
+    let nav = await utilities.getNav()
+    res.render("./inventory/adding-version", {
+        title: "Add New Version " + vehicle.inv_make + " " + vehicle.inv_model,
+        nav,
+        errors: null,
+        vehicle
+    })
+
+}
 
 // Edit Vehicle controller edit-vehicle
 invCont.editInventory = async function (req, res, next) {
@@ -140,6 +161,25 @@ invCont.updateInventoryPost = async function (req, res, next) {
             select_classifications,
             vehicle: vehicle_data
         })
+    }
+
+}
+/* ***************************
+ *  Build Add version POST controller
+ * ************************** */
+invCont.buildAddingVersionPost = async function (req, res, next) {
+    let inventory_id = parseInt(req.params.inventory_id);
+    req.vehicle.inv_id = inventory_id;
+    let dbVehicle = await invModel.getVehicleDetails(inventory_id)
+    dbVehicle = await dbVehicle[0]
+    let insertVersion = await invModel.insertNewVersion(req.vehicle);
+    if (insertVersion) {
+        const itemName = dbVehicle.inv_make + " " + dbVehicle.inv_model
+        req.flash("notice", `The ${itemName} was successfully updated.`)
+        res.redirect("/inv/")
+    } else {
+        req.flash("error", "Sorry, the insert failed.")
+        res.redirect("/inv/")
     }
 
 }

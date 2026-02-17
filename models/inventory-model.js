@@ -31,11 +31,21 @@ async function getInventoryByClassificationId(classification_id) {
 
 async function getVehicleDetails(vehicleId) {
     try {
-        console.log("Vehicle: " + vehicleId)
+        // console.log("Vehicle: " + vehicleId)
         const data = await pool.query(`SELECT * FROM public.inventory WHERE inv_id = $1`, [vehicleId]);
         return data.rows
     } catch (error) {
         console.log("Get Vehicle Error: " + error)
+        return undefined;
+    }
+}
+async function getVehicleVersions(vehicleId) {
+    try {
+        // console.log("Vehicle: " + vehicleId)
+        const data = await pool.query(`SELECT * FROM public.version WHERE inv_id = $1`, [vehicleId]);
+        return data.rows
+    } catch (error) {
+        console.log("Get Versions Error: " + error)
         return undefined;
     }
 }
@@ -89,6 +99,20 @@ async function insertNewVehicle(vehicle) {
         return error.message
     }
 }
+///////Inserting new version
+async function insertNewVersion(vehicle) {
+    try {
+        const sql = "INSERT INTO version (inv_id, version_name, version_image) VALUES ($1, $2, $3) RETURNING *"
+        return await pool.query(sql, [
+            vehicle.inv_id,
+            vehicle.version_name,
+            vehicle.version_image
+        ])
+    } catch (error) {
+        console.log(error.message)
+        return false;
+    }
+}
 
 /* ***************************
  *  Update Inventory Data
@@ -130,4 +154,4 @@ async function deleteInventory(inventory_id) {
 }
 
 
-module.exports = { deleteInventory, updateInventory, getClassifications, getInventoryByClassificationId, getVehicleDetails, insertNewClassification, classificationExists, classificationIdExists, insertNewVehicle };
+module.exports = { getVehicleVersions, insertNewVersion, deleteInventory, updateInventory, getClassifications, getInventoryByClassificationId, getVehicleDetails, insertNewClassification, classificationExists, classificationIdExists, insertNewVehicle };

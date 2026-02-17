@@ -1,0 +1,48 @@
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="error">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+            <h2><%- title %></h2>
+            <div id="add-classification-form">
+                <form action="/inv/add-version/<%- vehicle.inv_id %>" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="inv_id" id="inv_id" value="<%- vehicle.inv_id %>">
+                    <label>
+                        Version Name <span class="required"></span>
+                        <!-- <span id="pass-msg">(Name must be alphabetic characters only)</span> -->
+                        <input type="text" name="version_name" id="version_name" required
+                            placeholder="Insert a version name" <% if (vehicle.version_name !=undefined){ %>
+                        value="<%- vehicle.version_name %>"
+                            <% } %>
+                                >
+
+
+                    </label>
+                    <label>
+                        Image <span class="required"></span>
+                        <input type="file" id="version_image" name="version_image" accept="image/png, image/jpeg"
+                            required>
+                    </label>
+                    <input type="submit" name="submit" id="submit" value="Add Version">
+
+                </form>
+            </div>
+
+            <div id="current-versions">
+                <h2>Current versions</h2>
+                <% if (vehicle.versions !="" ) {%>
+
+                    <%- vehicle.versions %>
+
+                        <% }else{ %>
+                            <p>No versions available</p>
+
+                            <% } %>
+
+
+            </div>

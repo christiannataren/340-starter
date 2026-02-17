@@ -25,4 +25,11 @@ router.get("/delete/:inventory_id", utilities.handleErrors(invController.deleteI
 router.post("/delete/", utilities.handleErrors(invController.deleteInventoryPost));
 
 
+
+router.get("/add-version/:inventory_id", utilities.handleErrors(invController.buildAddingVersion));
+router.post("/add-version/:inventory_id", addingValidator.validateVersionRules(), addingValidator.checkVersionData, utilities.handleErrors(invController.buildAddingVersionPost));
+
+
+
+
 module.exports = router;
