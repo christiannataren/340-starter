@@ -25,9 +25,13 @@ router.get("/delete/:inventory_id", utilities.handleErrors(invController.deleteI
 router.post("/delete/", utilities.handleErrors(invController.deleteInventoryPost));
 
 
-
+/////Add versions routes
 router.get("/add-version/:inventory_id", utilities.handleErrors(invController.buildAddingVersion));
 router.post("/add-version/:inventory_id", addingValidator.validateVersionRules(), addingValidator.checkVersionData, utilities.handleErrors(invController.buildAddingVersionPost));
+
+/////Delete versions routes
+router.get("/version/delete/:version_id", utilities.handleErrors(invController.buildDeleteVersion));
+router.post("/version/delete/:version_id", utilities.handleErrors(invController.buildDeleteVersionPost));
 
 
 

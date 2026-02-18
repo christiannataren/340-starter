@@ -1,0 +1,31 @@
+<%- messages() %>
+    <% if (errors) { %>
+        <ul class="error">
+            <% errors.array().forEach(error=> { %>
+                <li>
+                    <%= error.msg %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+            <h2><%- title %></h2>
+            <div id="remove-version-form">
+                <form action="/inv/version/delete/<%- vehicle.version.version_id %>" method="post"
+                    enctype="multipart/form-data">
+                    <label>
+                        Version Name <span class="required"></span>
+                        <!-- <span id="pass-msg">(Name must be alphabetic characters only)</span> -->
+                        <input type="text" name="version_name" id="version_name" readonly required
+                            placeholder="Insert a version name" <% if (vehicle.version !=undefined){ %>
+                        value="<%- vehicle.version.version_name %>"
+                            <% } %>
+                                >
+
+
+                    </label>
+                    <img src="<%- vehicle.version.version_image %>" alt="">
+                    <p class="error">This will delete this version permanently</p>
+                    <input type="submit" name="submit" id="submit" value="Yes, Delete Version">
+
+                </form>
+            </div>

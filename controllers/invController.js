@@ -41,7 +41,7 @@ invCont.buildAddingVersion = async function (req, res, next) {
     let vehicle = await invModel.getVehicleDetails(inventory_id);
     let vdb = await invModel.getVehicleVersions(inventory_id)
     let versions = utilities.buildCurrenVersions(vdb);
-    
+
 
     vehicle = await vehicle[0];
     vehicle.versions = versions;
@@ -52,6 +52,54 @@ invCont.buildAddingVersion = async function (req, res, next) {
         errors: null,
         vehicle
     })
+
+}
+/* ***************************
+ *  Build delete version
+ * ************************** */
+invCont.buildDeleteVersion = async function (req, res, next) {
+    let version_id = parseInt(req.params.version_id);
+    let version = await invModel.getVersionById(version_id);
+    if (version == undefined) {
+        req.flash("error", "Invalid version");
+        res.redirect("/inv")
+        return
+
+    }
+    let inventory_id = parseInt(version.inv_id);
+    let vehicle = await invModel.getVehicleDetails(inventory_id);
+    vehicle = await vehicle[0]
+    vehicle.version = version;
+    let nav = await utilities.getNav()
+    res.render("./inventory/delete-version", {
+        title: `Delete Version ${vehicle.inv_make} ${vehicle.inv_model}`,
+        nav,
+        errors: null,
+        vehicle
+    })
+
+}
+/* ***************************
+ *  Build delete version
+ * ************************** */
+invCont.buildDeleteVersionPost = async function (req, res, next) {
+    let version_id = parseInt(req.params.version_id);
+    let version = await invModel.getVersionById(version_id);
+    if (version == undefined) {
+        req.flash("error", "Invalid version");
+        res.redirect("/inv")
+        return
+
+    }
+    let deleted = await invModel.deleteVersion(version.version_id)
+    if (deleted) {
+        let inventory_id = parseInt(version.inv_id);
+        req.flash("notice", `${version.version_name} has been deleted`)
+        res.redirect('/inv/add-version/' + inventory_id)
+    } else {
+        req.flash("error", `${version.version_name} has not been deleted`)
+        res.redirect('/inv/')
+    }
 
 }
 
@@ -176,7 +224,7 @@ invCont.buildAddingVersionPost = async function (req, res, next) {
     if (insertVersion) {
         const itemName = dbVehicle.inv_make + " " + dbVehicle.inv_model
         req.flash("notice", `The ${itemName} was successfully updated.`)
-        res.redirect("/inv/")
+        res.redirect("/inv/add-version/" + dbVehicle.inv_id)
     } else {
         req.flash("error", "Sorry, the insert failed.")
         res.redirect("/inv/")
@@ -256,7 +304,6 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.getInventoryJSON = async function (req, res, next) {
     const classification_id = parseInt(req.params.classification_id)
     const invData = await invModel.getInventoryByClassificationId(classification_id)
-    console.log("Entramos a jSON")
     if (invData[0].inv_id) {
         return res.json(invData)
     } else {

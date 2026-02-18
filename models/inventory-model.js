@@ -39,6 +39,16 @@ async function getVehicleDetails(vehicleId) {
         return undefined;
     }
 }
+async function getVersionById(versionId) {
+    try {
+        // console.log("Vehicle: " + vehicleId)
+        const data = await pool.query(`SELECT * FROM public.version WHERE version_id = $1`, [versionId]);
+        return data.rows[0]
+    } catch (error) {
+        console.log("Get Versions Error: " + error)
+        return undefined;
+    }
+}
 async function getVehicleVersions(vehicleId) {
     try {
         // console.log("Vehicle: " + vehicleId)
@@ -152,6 +162,19 @@ async function deleteInventory(inventory_id) {
         console.error("model error: " + error)
     }
 }
+/* ***************************
+ *  Delete Version Data
+ * ************************** */
+async function deleteVersion(version_id) {
+    try {
+        const sql =
+            "DELETE FROM public.version WHERE version_id = $1 RETURNING *"
+        const data = await pool.query(sql, [version_id])
+        return data.rows[0]
+    } catch (error) {
+        console.error("model error: " + error)
+    }
+}
 
 
-module.exports = { getVehicleVersions, insertNewVersion, deleteInventory, updateInventory, getClassifications, getInventoryByClassificationId, getVehicleDetails, insertNewClassification, classificationExists, classificationIdExists, insertNewVehicle };
+module.exports = {deleteVersion, getVersionById, getVehicleVersions, insertNewVersion, deleteInventory, updateInventory, getClassifications, getInventoryByClassificationId, getVehicleDetails, insertNewClassification, classificationExists, classificationIdExists, insertNewVehicle };
